@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs: 
+  job_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: step1
+        uses: actions/checkout@v2
+      - name : build1
+        run: |
+          docker volume create openstreetmap-data
+          docker run \
+            -e DOWNLOAD_PBF=https://download.geofabrik.de/asia/japan-latest.osm.pbf \
+            -e DOWNLOAD_POLY=https://download.geofabrik.de/asia/japan.poly \
+            -v openstreetmap-data:/var/lib/postgresql/12/main \
+            overv/openstreetmap-tile-server \
+            import
