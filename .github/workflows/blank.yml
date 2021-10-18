@@ -21,7 +21,7 @@ jobs:
           ./download-geofabrik download $area
           docker volume create openstreetmap-data
           docker run \
-            ―v /home/runner/work/jp_openstreetmap/jp_openstreetmap/$area.osm.pbf:/data.osm.pbf \
+            -v /home/runner/work/jp_openstreetmap/jp_openstreetmap/$area.osm.pbf:/data.osm.pbf \
             -v openstreetmap-data:/var/lib/postgresql/12/main \
             overv/openstreetmap-tile-server \
             import
