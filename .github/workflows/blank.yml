@@ -9,15 +9,19 @@ on:
 jobs: 
   job_1:
     runs-on: ubuntu-latest
+    env :
+      area : shikoku
     steps:
       - name: step1
         uses: actions/checkout@v2
       - name : build1
         run: |
+          wget https://github.com/julien-noblet/download-geofabrik/releases/download/v2.5.0/download-geofabrik_2.5.0_Linux_x86_64.tar.gz
+          tar vxfz ./download-geofabrik_2.5.0_Linux_x86_64.tar.gz
+          ./download-geofabrik download $area
           docker volume create openstreetmap-data
           docker run \
-            -e DOWNLOAD_PBF=https://download.geofabrik.de/asia/japan-latest.osm.pbf \
-            -e DOWNLOAD_POLY=https://download.geofabrik.de/asia/japan.poly \
+            ―v ./$area.osm.pbf:/data.osm.pbf \
             -v openstreetmap-data:/var/lib/postgresql/12/main \
             overv/openstreetmap-tile-server \
             import
